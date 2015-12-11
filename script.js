@@ -1,9 +1,5 @@
 window.onload = function () {
     var elem = document.getElementById("result");
-    elem.innerHTML = "<h1>" + ["Salateira", "McDonalds", "Wokkery", "Пелотка", "Пузата Хата"][Math.floor(Math.random() * 5)] + "</h1>";
-
-    ymaps.ready(init);
-
     function init(){
 	    ymaps.geolocation.get().then(function (res) {
 		    var $container = $('map'),
@@ -14,7 +10,7 @@ window.onload = function () {
 		        ),
 		        map = new ymaps.Map('map', {
 		        	center: mapState.center,
-		        	zoom: 16
+		        	zoom: 17
 		        }),
 				myGeoObject = new ymaps.GeoObject({
 			        geometry: {
@@ -28,5 +24,8 @@ window.onload = function () {
 		    console.log(e);
 		});
     }
+    
+    elem.innerHTML = "<h1>" + ["Salateira", "McDonalds", "Wokkery", "Пелотка", "Пузата Хата"][Math.seedrandom(Math.floor(new Date().getTime() / 86400000))] + "</h1>";
+    ymaps.ready(init);
 };
 
