@@ -1,0 +1,25 @@
+#box {
+    margin-top: 5%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#map {
+    width: 1000px; 
+    height: 400px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#header {
+    text-align: center;
+    font-size: 15px;
+    font-family: Tahoma;
+}
+
+#result {
+    text-align: center;
+    font-size: 20px;
+    font-family: Tahoma;
+    color: #E82C0C;
+}
