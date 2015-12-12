@@ -62,8 +62,6 @@ window.onload = function () {
                 });
                 
                 map.geoObjects.add(myGeoObject);
-            }, function (e) {
-                console.log(e);
             });
         }
 
