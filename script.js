@@ -3,7 +3,7 @@ window.onload = function () {
     var apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
     navigator.geolocation.getCurrentPosition(function(position) {
-        $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + position.coords.latitude + "%2C" + position.coords.longitude + "&sspn=0.013583&apikey=" + apiKey, {}, function (data) {
+        $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + position.coords.latitude + "%2C" + position.coords.longitude + "&sspn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
             console.log(data);
         });
     });
@@ -26,7 +26,13 @@ window.onload = function () {
                         coordinates: mapState.center
                    }
                 });
-                
+
+                console.log("ll=" + mapState.center[1].toFixed(6) + "%2C" + mapState.center[0].toFixed(6));
+
+                console.log($.getJSON("https://search-maps.yandex.ru/v1/?text=еда&type=biz&lang=uk_UA&ll=" + mapState.center[0].toFixed(6) + "%2C" + mapState.center[1].toFixed(6) + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
+                    console.log(data);
+                }));
+
                 map.geoObjects.add(myGeoObject);
         }, function (e) {
             console.log(e);
