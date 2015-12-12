@@ -1,8 +1,15 @@
 window.onload = function () {
     var elem = document.getElementById("result");
+    var lat, lng;
     function init(){
         ymaps.geolocation.get().then(function (res) {
             var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
+            var lat, lng;
+
+            navigator.geolocation.getCurrentPosition(function(data) {
+                lat = data.coords.latitude;
+                lng = data.coords.longitude;
+            });
 
             var $container = $('map'),
                 bounds = res.geoObjects.get(0).properties.get('boundedBy'),
@@ -19,25 +26,6 @@ window.onload = function () {
                         type: "Point",
                         coordinates: mapState.center
                    }
-                });
-
-            var lat = bounds[0][0],
-                lng = bounds[1][0];
-
-                navigator.geolocation.getCurrentPosition(function(data) {
-                    var lat = data.coords.latitude;
-                    var lng = data.coords.longitude;
-                    console.log(lat, lng);
-
-                    var map = new L.Map('map_canvas')
-                      .setView(new L.LatLng(lat, lng), 15);
-
-                    console.log(map);
-                    var mapboxUrl = 'http://a.tiles.mapbox.com/v3/foursquare.map-b7qq4a62.jsonp';
-                        
-                        wax.tilejson(mapboxUrl, function(tilejson) {
-                            map.addLayer(new wax.leaf.connector(tilejson));
-                        });
                 });
 
                 // $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + lat + ',' + lng + '&oauth_token=' + window.token + '&v=20140601', {}, function(data) {
@@ -66,7 +54,10 @@ window.onload = function () {
                 //         map.addLayer(marker);
                 //     }
                 // })
-                console.log($.getJSON("https://search-maps.yandex.ru/v1/?/apikey=" + yKey + "&text=где%20поесть&lang=uk_UA&ll=" + lat + "," + lng + "sspn=0.006791"));
+                // lat = bounds[0][0];
+                // lng = bounds[1][0];
+
+                console.log($.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "," + lng + "sspn=0.006791&apikey=" + yKey));
                 
                 map.geoObjects.add(myGeoObject);
             }, function (e) {
@@ -78,4 +69,3 @@ window.onload = function () {
     elem.innerHTML = "<h1>" + ["Salateira", "McDonalds", "Wokkery", "Пелотка", "Пузата Хата"][Math.floor(Math.random() * 5)] + "</h1>";
     ymaps.ready(init);
 };
-
