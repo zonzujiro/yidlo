@@ -1,20 +1,14 @@
 window.onload = function () {
     var elem = document.getElementById("result");
-    // var lat, lng;
     var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
     navigator.geolocation.getCurrentPosition(function(data) {
-        console.log(data.coords.latitude, data.coords.longitude);
-
         var lat = data.coords.latitude;
         var lng = data.coords.longitude;
 
-        console.log("navigator" + lat, lng);
-    });
-
-    console.log("after navigator" + lat, lng);
-    $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
-        console.log(data);
+        $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
+            console.log(data);
+        });
     });
 
     function init(){
