@@ -2,8 +2,8 @@ window.onload = function () {
     var elem = document.getElementById("result");
     var apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
-    navigator.geolocation.getCurrentPosition(function(data) {
-        $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + data.coords.latitude + "%2C" + data.coords.longitude + "&sspn=0.06791&apikey=" + apiKey, {}, function (data) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + position.coords.latitude + "%2C" + position.coords.longitude + "&sspn=0.06791&apikey=" + apiKey, {}, function (data) {
             console.log(data);
         });
     });
