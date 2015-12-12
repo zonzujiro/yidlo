@@ -4,6 +4,8 @@ window.onload = function () {
     var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
     navigator.geolocation.getCurrentPosition(function(data) {
+        console.log(data.coords.latitude, data.coords.longitude);
+
         lat = data.coords.latitude;
         lng = data.coords.longitude;
     });
