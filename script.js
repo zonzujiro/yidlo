@@ -8,8 +8,10 @@ window.onload = function () {
 
         lat = data.coords.latitude;
         lng = data.coords.longitude;
-    });
 
+        console.log("navigator" + lat, lng);
+    });
+    console.log(lat, lng);
     $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
         console.log(data);
     });
