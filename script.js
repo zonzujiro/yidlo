@@ -6,10 +6,10 @@ window.onload = function () {
             var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
             var lat, lng;
 
-            navigator.geolocation.getCurrentPosition(function(data) {
-                lat = data.coords.latitude;
-                lng = data.coords.longitude;
-            });
+            // navigator.geolocation.getCurrentPosition(function(data) {
+            //     lat = data.coords.latitude;
+            //     lng = data.coords.longitude;
+            // });
 
             var $container = $('map'),
                 bounds = res.geoObjects.get(0).properties.get('boundedBy'),
