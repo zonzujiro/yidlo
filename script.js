@@ -1,6 +1,6 @@
 window.onload = function () {
     var elem = document.getElementById("result");
-    var lat, lng;
+
     function init(){
         ymaps.geolocation.get().then(function (res) {
             var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
@@ -54,10 +54,12 @@ window.onload = function () {
                 //         map.addLayer(marker);
                 //     }
                 // })
-                // lat = bounds[0][0];
-                // lng = bounds[1][0];
+                lat = bounds[0][0];
+                lng = bounds[1][0];
 
-                console.log($.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "," + lng + "sspn=0.006791&apikey=" + yKey));
+                $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
+                    console.log(data);
+                });
                 
                 map.geoObjects.add(myGeoObject);
             }, function (e) {
