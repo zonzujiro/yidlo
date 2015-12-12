@@ -1,15 +1,19 @@
 window.onload = function () {
     var elem = document.getElementById("result");
-    var let, lng;
+    var lat, lng;
+    var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
-        navigator.geolocation.getCurrentPosition(function(data) {
-            lat = data.coords.latitude;
-            lng = data.coords.longitude;
-        });
+    navigator.geolocation.getCurrentPosition(function(data) {
+        lat = data.coords.latitude;
+        lng = data.coords.longitude;
+    });
+
+    $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
+        console.log(data);
+    });
 
     function init(){
         ymaps.geolocation.get().then(function (res) {
-            var yKey = "007d1580-2af8-4055-ac77-d4e07172b230";
             var $container = $('map'),
                 bounds = res.geoObjects.get(0).properties.get('boundedBy'),
                 mapState = ymaps.util.bounds.getCenterAndZoom(
@@ -56,10 +60,6 @@ window.onload = function () {
                 //     }
                 // })
 
-                $.getJSON("https://search-maps.yandex.ru/v1/?text=где%20поесть&type=biz&lang=uk_UA&ll=" + lat + "%2C" + lng + "&sspn=0.06791&apikey=" + yKey, {}, function (data) {
-                    console.log(data);
-                });
-                
                 map.geoObjects.add(myGeoObject);
             }, function (e) {
                 console.log(e);
