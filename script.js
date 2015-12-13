@@ -2,7 +2,16 @@ window.onload = function() {
     var elem = document.getElementById("result");
     var apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
-    function init() {
+    function init() {        
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+        }, function() {
+            console.log("Navigator error");
+        });
+
         ymaps.geolocation.get().then(function (res) {
             var $container = $('map'),
                 bounds = res.geoObjects.get(0).properties.get('boundedBy'),
@@ -23,7 +32,7 @@ window.onload = function() {
 
             $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + mapState.center[1] + "," + mapState.center[0] + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
                 var lunch = data.features[Math.floor(Math.random() * data.features.length)];
-                console.log(lunch);
+                
                 elem.innerHTML = "<h1>" + lunch.properties.name + "</h1>";
                 map.geoObjects
                         .add(user)
@@ -34,6 +43,8 @@ window.onload = function() {
                             iconColor: '#3caa3c'
                         }));
             });
+        }, function(e) {
+            console.log(e);
         });
     }
 
