@@ -61,7 +61,9 @@ window.onload = function() {
                     }
                 });
 
-            $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + mapState.center[1] + "," + mapState.center[0] + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
+            $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&rspn=1&lang=uk_UA&ll=" + mapState.center[1] + "," + mapState.center[0] + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
+                if ()
+
                 var lunch = data.features[Math.floor(Math.random() * data.features.length)];
                 
                 elem.innerHTML = "<h1>" + lunch.properties.name + "</h1>";
