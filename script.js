@@ -69,7 +69,7 @@ window.onload = function() {
 
                 var lunch = data.features[Math.floor(Math.random() * data.features.length)];
                 
-                elem.innerHTML = "<h1>" + lunch.properties.name + "</h1>";
+                elem.innerHTML = "<p>" + lunch.properties.name + "</p>";
                 map.geoObjects
                         .add(user)
                         .add(new ymaps.Placemark([lunch.geometry.coordinates[1], lunch.geometry.coordinates[0]], {
