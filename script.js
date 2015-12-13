@@ -34,8 +34,6 @@ window.onload = function() {
                             iconColor: '#3caa3c'
                         }));
             });
-        }, function(e) {
-            console.log(e);
         });
     }
 
