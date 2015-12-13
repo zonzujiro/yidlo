@@ -3,16 +3,18 @@ window.onload = function() {
     var apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
     function init() {        
-        // navigator.geolocation.getCurrentPosition(function(position) {
-        //     var pos = {
-        //         lat: position.coords.latitude,
-        //         lng: position.coords.longitude
-        //     };
-        // }, function() {
-        //     console.log("Navigator error");
-        // });
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            
+            console.log(pos);
 
-        // console.log(pos);
+        }, function() {
+            console.log("Navigator error");
+        });
+
 
         ymaps.geolocation.get().then(function (res) {
             var $container = $('map'),
