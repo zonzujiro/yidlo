@@ -12,6 +12,8 @@ window.onload = function() {
             console.log("Navigator error");
         });
 
+        console.log(pos);
+
         ymaps.geolocation.get().then(function (res) {
             var $container = $('map'),
                 bounds = res.geoObjects.get(0).properties.get('boundedBy'),
