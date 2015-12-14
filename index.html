@@ -1,63 +1,24 @@
-<!DOCTYPE HTML>
-<!--
-    Identity by HTML5 UP
-    html5up.net | @n33co
-    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Yidlo</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="assets/css/main.css" />
-        <link rel="stylesheet" href="map.css">
-        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-        <script src="jquery.min.js"></script>
-        <script src="script.js"></script>
-        
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
-        
-        <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhf1gnxuDIlTv6B7KQQAnAUc84nBPVeUU&signed_in=true&callback=initMap" async defer></script>
-    </head>
-    <body class="is-loading">
 
-        <!-- Wrapper -->
-            <div id="wrapper">
+<head>
+    <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="map.css">
+    <script src="jquery.min.js"></script>
+    <script src="script.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>        
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhf1gnxuDIlTv6B7KQQAnAUc84nBPVeUU&signed_in=true&callback=initMap" async defer></script>
+</head>
 
-                <!-- Main -->
-                    <section id="main">
-                        <header>
-                            <!-- <span class="avatar"><img src="images/avatar.jpg" alt="" /></span> -->
-                            <h1>Yidlo</h1>
-                            <div id = "box">
-                                <div id = "header"><h2>Сьогодні йдемо до:</h2></div>
-                                <div id = "result"></div>
-                                <div id = "map"></div>
-                            </div>
-                        </header>
-                        <footer>
-                        </footer>
-                    </section>
+<body>
+	<div id = "box">
+        <div id = "header"><h2>Сьогодні йдемо до:</h2></div>
+        <div id = "result"></div>
+        <div id = "map"></div>
+    </div>
+</body>
 
-                <!-- Footer -->
-                    <footer id="footer">
-                        <ul class="copyright">
-                            <li>&copy; Yidlo</li>
-                            <!-- <li>Design: <a href="http://html5up.net">HTML5 UP</a></li> -->
-                        </ul>
-                    </footer>
-
-            </div>
-
-        <!-- Scripts -->
-            <!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
-            <script>
-                if ('addEventListener' in window) {
-                    window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
-                    document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-                }
-            </script>
-
-    </body>
 </html>
