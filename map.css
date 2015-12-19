@@ -1,20 +1,40 @@
 #box {
-    margin-top: 5%;
+    /*margin-top: 5%;*/
     margin-right: auto;
     margin-left: auto;
 }
 
+#share {
+    margin-left: 10%;
+}
+
+#top {
+    margin: 0;
+    padding: 4px;
+}
+
+#top li {
+    display: inline-block!important;
+    margin-right: 5px;
+    padding: 3px;
+}
+
 #map {
-    width: 1000px; 
+    width: 100%; 
     height: 600px;
     margin-right: auto;
     margin-left: auto;
 }
 
 #header {
-    text-align: center;
-    font-size: 15px;
-    font-family: Tahoma;
+    font-size: 16px;
+    font-family: Georgia;
+    color: #C8001A;
+}
+
+#message {
+    font-size: 12px;
+    font-family: Arial;
 }
 
 #result {

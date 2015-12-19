@@ -1,6 +1,5 @@
 window.onload = function () {
-    var elem = document.getElementById("result");
-    var apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
+    // var share = document.getElementById("share");
 
     Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
     
@@ -55,8 +54,10 @@ window.onload = function () {
                         options: {
                             provider: 'yandex#search'
                         }
-                    });
+                    }),
+                    apiKey = "007d1580-2af8-4055-ac77-d4e07172b230";
 
+            $("#share").html("<p>Посилання для друзів: http://zonzujiro.github.io/yidlo/?lat=" + pos.lat + "&lng=" + pos.lng);
             map.controls.add(searchControl);
             map.geoObjects.add(user);
 
@@ -66,12 +67,9 @@ window.onload = function () {
         }
 
         url = parseUrl();
-        console.log(url);
-        console.log(url.lat);
-        console.log(url.lng);
-        if (url.lat != undefined && url.lng != undefined && typeof url.lat == "number" && typeof url.lng == "number" ) {
+        
+        if (url.lat != undefined && url.lng != undefined) {
             console.log("Position in url founded");
-
             var pos = {
                 lat: url.lat,
                 lng: url.lng
