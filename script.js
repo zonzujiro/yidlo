@@ -66,7 +66,9 @@ window.onload = function () {
         }
 
         url = parseUrl();
-
+        console.log(url);
+        console.log(url.lat);
+        console.log(url.lng);
         if (url.lat != undefined && url.lng != undefined && typeof url.lat == "number" && typeof url.lng == "number" ) {
             console.log("Position in url founded");
 
