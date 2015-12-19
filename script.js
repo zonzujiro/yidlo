@@ -5,6 +5,23 @@ window.onload = function () {
     Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
     
     ymaps.ready(function () {
+        var url;
+
+        function parseUrl () {
+            var urlParam = {},
+                match,
+                pl     = /\+/g,
+                search = /([^&=]+)=?([^&]*)/g,
+                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+                query  = window.location.search.substring(1);
+
+            while (match = search.exec(query)) {
+               urlParam[decode(match[1])] = decode(match[2]);
+            }
+
+            return urlParam;
+        };
+
         function success (position) {
             var pos = {
                 lat: position.coords.latitude,
@@ -48,24 +65,15 @@ window.onload = function () {
             });
         }
 
-        function parseUrl () {
-            var urlParam = {},
-                match,
-                pl     = /\+/g,
-                search = /([^&=]+)=?([^&]*)/g,
-                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-                query  = window.location.search.substring(1);
+        url = parseUrl();
 
-            while (match = search.exec(query)) {
-               urlParam[decode(match[1])] = decode(match[2]);
+        if (url.lat != undefined && url.lng != undefined && typeof url.lat == "number" && typeof url.lng == "number" ) {
+            var pos = {
+                lat: url.lat,
+                lng: url.lng
             }
-
-            console.log(urlParam);
-        };
-
-        parseUrl();
-
-        if (navigator.geolocation) {
+            drawMap(pos);
+        } else if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error);
         } else {
             error();
