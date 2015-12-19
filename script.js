@@ -68,12 +68,15 @@ window.onload = function () {
         url = parseUrl();
 
         if (url.lat != undefined && url.lng != undefined && typeof url.lat == "number" && typeof url.lng == "number" ) {
+            console.log("Position in url founded");
+
             var pos = {
                 lat: url.lat,
                 lng: url.lng
             }
             drawMap(pos);
         } else if (navigator.geolocation) {
+            console.log("Searching user's geolocation");
             navigator.geolocation.getCurrentPosition(success, error);
         } else {
             error();
