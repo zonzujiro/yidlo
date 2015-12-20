@@ -75,8 +75,8 @@ window.onload = function() {
             draw(pos);
         };
 
-        function error() {
-            console.log("An error occurred. Trying to take geo from cookies");
+        function takeGeoFromCookies() {
+            console.log("Trying to take geo from cookies");
             var pos = {
                 lat: getCookie("lat"),
                 lng: getCookie("lng")
@@ -129,9 +129,9 @@ window.onload = function() {
             draw(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
-            navigator.geolocation.getCurrentPosition(success, error);
+            navigator.geolocation.getCurrentPosition(success, takeGeoFromCookies);
         } else {
-            error();
+            takeGeoFromCookies();
         }
     });
 };
