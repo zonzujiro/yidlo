@@ -12,7 +12,7 @@ window.onload = function() {
                 decode = function(s) {
                     return decodeURIComponent(s.replace(pl, " "));
                 },
-                query = window.location.search.substring(1);
+                query = window.location.hash.substring(1);
 
             while (match = search.exec(query)) {
                 urlParam[decode(match[1])] = decode(match[2]);
