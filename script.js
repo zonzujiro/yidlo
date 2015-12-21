@@ -22,7 +22,7 @@ window.onload = function() {
         };
 
         function success(position) {
-            var bounds = position.geoObjects.get(0).properties.get('boundedBy');
+            var bounds = position.geoObjects.get(0).properties.get('boundedBy'),
                 $container = $('map'),
                 mapState = ymaps.util.bounds.getCenterAndZoom(
                     bounds,
@@ -95,7 +95,6 @@ window.onload = function() {
             console.log("Searching user's geolocation");
             // navigator.geolocation.getCurrentPosition(success, takeGeoFromCookies);
             ymaps.geolocation.get().then(success, takeGeoFromCookies);
-                
         } else {
             takeGeoFromCookies();
         }
