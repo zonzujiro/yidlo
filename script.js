@@ -22,10 +22,17 @@ window.onload = function() {
         };
 
         function success(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
+            var bounds = position.geoObjects.get(0).properties.get('boundedBy');
+                $container = $('map'),
+                mapState = ymaps.util.bounds.getCenterAndZoom(
+                    bounds,
+                    [$container.width(), $container.height()]
+                ),
+                pos = {
+                    lat: mapState.center[0].toFixed(4),
+                    lng: mapState.center[1].toFixed(4)
+                };
+
             Cookies.remove("lat");
             Cookies.remove("lng");
             Cookies.set('lat', pos.lat, { expires: 7 });
@@ -36,9 +43,9 @@ window.onload = function() {
         function takeGeoFromCookies() {
             console.log("Trying to take geo from cookies");
             var pos = {
-                lat: Cookies.get("lat"),
-                lng: Cookies.get("lng")
-            }
+                    lat: Cookies.get("lat"),
+                    lng: Cookies.get("lng")
+                }
             
             if (pos.lat != undefined && pos.lng != undefined) {
                 draw(pos);
@@ -86,7 +93,9 @@ window.onload = function() {
             draw(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
-            navigator.geolocation.getCurrentPosition(success, takeGeoFromCookies);
+            // navigator.geolocation.getCurrentPosition(success, takeGeoFromCookies);
+            ymaps.geolocation.get().then(success, takeGeoFromCookies);
+                
         } else {
             takeGeoFromCookies();
         }
