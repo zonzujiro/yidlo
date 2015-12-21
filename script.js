@@ -4,14 +4,12 @@ window.onload = function() {
     ymaps.ready(function() {
         var url;
 
-        function parseUrl() {
+        function parseUrl () {
             var urlParam = {},
                 match,
                 pl = /\+/g,
                 search = /([^&=]+)=?([^&]*)/g,
-                decode = function(s) {
-                    return decodeURIComponent(s.replace(pl, " "));
-                },
+                decode = function(s) { return decodeURIComponent(s.replace(pl, " ")); },
                 query = window.location.hash.substring(1);
 
             while (match = search.exec(query)) {
@@ -21,7 +19,7 @@ window.onload = function() {
             return urlParam;
         };
 
-        function success(position) {
+        function success (position) {
             var bounds = position.geoObjects.get(0).properties.get('boundedBy'),
                 $container = $('map'),
                 mapState = ymaps.util.bounds.getCenterAndZoom(
@@ -40,7 +38,7 @@ window.onload = function() {
             draw(pos);
         };
 
-        function takeGeoFromCookies() {
+        function takeGeoFromCookies () {
             console.log("Trying to take geo from cookies");
             var pos = {
                     lat: Cookies.get("lat"),
@@ -52,7 +50,7 @@ window.onload = function() {
             }
         }
 
-        function draw(pos) {
+        function draw (pos) {
             var map = new ymaps.Map('map', {
                     center: [pos.lat, pos.lng],
                     zoom: 17,
@@ -93,7 +91,6 @@ window.onload = function() {
             draw(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
-            // navigator.geolocation.getCurrentPosition(success, takeGeoFromCookies);
             ymaps.geolocation.get().then(success, takeGeoFromCookies);
         } else {
             takeGeoFromCookies();
