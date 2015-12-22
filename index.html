@@ -1,34 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>        
-        <script src="https://api-maps.yandex.ru/2.1/?lang=uk_UA" type="text/javascript"></script>
-        <script src="js/js.cookie.js"></script>
-        <script src="js/map.js"></script>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/map.css" rel="stylesheet">
-        <title>Yidlo</title>
-    </head>
-    <body>
-        <div class = "container">
-            <h1>Yidlo</h1>
-            <div class="row marketing">
-                <div class="col-lg-6"><div id = "share"></div></div>
-                <div class="col-lg-6">
-                    <nav>
-                        <ul class="nav nav-pills pull-right">
-                            <li role="presentation" class = "active"><a href="#">Головна</a></li>
-                            <li role="presentation"><a href="#">Про проект</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>   
-            <div id = "map"></div>
-        </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-  </body>
+<html>
+
+<head>
+    <title>Yidlo - ззасіб обрати їдло</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="map.css">
+    <script src="jquery.min.js"></script>
+    <script src="script.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>        
+    <script src="https://api-maps.yandex.ru/2.1/?lang=uk_UA" type="text/javascript"></script>
+    <script src="js.cookie.js"></script>
+</head>
+
+<body>
+	<div id = "box">
+        <ul id = "top">
+            <li id = "header"><h1>Yidlo</h1></li>
+            <li id = "message"><h2>Сьогодні йдемо до:</h2></li>
+            <li id = "share"></li>
+        </ul>
+        <div id = "map"></div>
+    </div>
+</body>
+
 </html>
