@@ -8,6 +8,17 @@
     margin-left: 10%;
 }
 
+#share #url {
+    font-family: "Trebuchet MS","Verdana",Arial,"Bitstream Vera Sans",sans-serif;
+    font-size: .95em;
+    margin-bottom: .8em;
+    padding: 3px 2px;
+}
+
+#share p {
+    margin-bottom: 2px;
+}
+
 #top {
     margin: 0;
     padding: 4px;

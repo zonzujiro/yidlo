@@ -70,7 +70,7 @@ window.onload = function() {
                 apiKey = "007d1580-2af8-4055-ac77-d4e07172b230",
                 userPosition = "#lat=" + pos.lat + "&lng=" + pos.lng;
 
-            $("#share").html("<p>Посилання для друзів: http://zonzujiro.github.io/yidlo/" + userPosition);
+            $("#share").html('<p>Посилання друзям: </p><input id="url" size="55" value="http://zonzujiro.github.io/yidlo' + userPosition + '" readonly="readonly" type="text" id="show" onclick="this.select()">');
             window.location = window.location.pathname + userPosition;
             window.onhashchange = function () {
                 $("#map").html("");
