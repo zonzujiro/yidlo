@@ -71,17 +71,19 @@ window.onload = function() {
                 userPosition = "#lat=" + pos.lat + "&lng=" + pos.lng;
 
             $("#share").html('<p>Посилання друзям: </p><input id="url" size="55" value="http://zonzujiro.github.io/yidlo' + userPosition + '" readonly="readonly" type="text" id="show" onclick="this.select()">');
+            
             window.location = window.location.pathname + userPosition;
             window.onhashchange = function () {
-                $("#map").html("");
-
-                url = parseUrl();
-
-                var pos = {
-                    lat: url.lat,
-                    lng: url.lng
+                var url = parseUrl(),
+                    pos = {
+                        lat: url.lat,
+                        lng: url.lng
+                    };
+                
+                if (pos.lat != undefined && pos.lng != undefined) {
+                    $("#map").html("");
+                    draw(pos);                    
                 }
-                draw(pos);
             }
 
             map.controls.add(searchControl);
@@ -95,11 +97,12 @@ window.onload = function() {
         url = parseUrl();
 
         if (url.lat != undefined && url.lng != undefined) {
-            console.log("Position in url founded");
             var pos = {
                 lat: url.lat,
                 lng: url.lng
             }
+            
+            console.log("Position in url founded");
             draw(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
