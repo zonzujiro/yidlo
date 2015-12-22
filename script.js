@@ -72,6 +72,18 @@ window.onload = function() {
 
             $("#share").html("<p>Посилання для друзів: http://zonzujiro.github.io/yidlo/" + userPosition);
             window.location = window.location.pathname + userPosition;
+            window.onhashchange = function () {
+                $("#map").html("");
+
+                url = parseUrl();
+
+                var pos = {
+                    lat: url.lat,
+                    lng: url.lng
+                }
+                draw(pos);
+            }
+
             map.controls.add(searchControl);
             map.geoObjects.add(user);
 
