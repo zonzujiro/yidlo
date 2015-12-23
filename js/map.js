@@ -1,6 +1,4 @@
 window.onload = function() {
-    Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
-
     ymaps.ready(function() {
         var url;
 
@@ -90,6 +88,7 @@ window.onload = function() {
             map.geoObjects.add(user);
 
             $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + pos.lng + "," + pos.lat + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function(data) {
+                Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
                 searchControl.search(data.features[Math.floor(Math.random() * data.features.length)].properties.name);
             });
         }
