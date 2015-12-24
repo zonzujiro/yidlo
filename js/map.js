@@ -29,18 +29,15 @@ window.onload = function() {
                     lng: mapState.center[1].toFixed(4)
                 };
 
-            Cookies.remove("lat");
-            Cookies.remove("lng");
-            Cookies.set('lat', pos.lat, { expires: 7 });
-            Cookies.set('lng', pos.lng, { expires: 7 });
+            savePosInLocalStorage(pos);
             draw(pos);
         };
 
-        function takeGeoFromCookies () {
-            console.log("Trying to take geo from cookies");
+        function takePosFromLocalStorage () {
+            console.log("Trying to take geo from the local storage");
             var pos = {
-                    lat: Cookies.get("lat"),
-                    lng: Cookies.get("lng")
+                    lat: localStorage.getItem("lat"),
+                    lng: localStorage.getItem("lng")
                 }
             
             if (pos.lat != undefined && pos.lng != undefined) {
@@ -81,6 +78,13 @@ window.onload = function() {
             });
         }
 
+        function savePosInLocalStorage (pos) {
+            localStorage.removeItem("lat");
+            localStorage.removeItem("lng");
+            localStorage.setItem('lat', pos.lat, { expires: 7 });
+            localStorage.setItem('lng', pos.lng, { expires: 7 });
+        }
+
         window.onhashchange = function () {
             var url = parseUrl(),
                 pos = {
@@ -90,10 +94,7 @@ window.onload = function() {
             
             if (pos.lat != undefined && pos.lng != undefined) {
                 $("#map").html("");
-                Cookies.remove("lat");
-                Cookies.remove("lng");
-                Cookies.set('lat', pos.lat, { expires: 7 });
-                Cookies.set('lng', pos.lng, { expires: 7 });
+                savePosInLocalStorage(pos);
                 draw(pos);
             }
         }
@@ -105,14 +106,11 @@ window.onload = function() {
             }
 
             console.log("Position in url founded");
-            Cookies.remove("lat");
-            Cookies.remove("lng");
-            Cookies.set('lat', pos.lat, { expires: 7 });
-            Cookies.set('lng', pos.lng, { expires: 7 });
+            savePosInLocalStorage(pos);
             draw(pos);
         } else {
             console.log("Searching user's geolocation");
-            ymaps.geolocation.get().then(success, takeGeoFromCookies);
+            ymaps.geolocation.get().then(success, takePosFromLocalStorage);
         }
     });
 };
