@@ -1,6 +1,6 @@
 window.onload = function() {
     ymaps.ready(function() {
-        var url;
+        var url = parseUrl();
 
         function parseUrl () {
             var urlParam = {},
@@ -71,18 +71,6 @@ window.onload = function() {
             $("#share").html('<p>Посилання друзям: </p><input id="url" type="text" class = "form-control" value="http://zonzujiro.github.io/yidlo' + userPosition + '" readonly="readonly" type="text" id="show" onclick="this.select()">');
             
             window.location = window.location.pathname + userPosition;
-            window.onhashchange = function () {
-                var url = parseUrl(),
-                    pos = {
-                        lat: url.lat,
-                        lng: url.lng
-                    };
-                
-                if (pos.lat != undefined && pos.lng != undefined) {
-                    $("#map").html("");
-                    draw(pos);                    
-                }
-            }
 
             map.controls.add(searchControl);
             map.geoObjects.add(user);
@@ -93,21 +81,38 @@ window.onload = function() {
             });
         }
 
-        url = parseUrl();
+        window.onhashchange = function () {
+            var url = parseUrl(),
+                pos = {
+                    lat: url.lat,
+                    lng: url.lng
+                };
+            
+            if (pos.lat != undefined && pos.lng != undefined) {
+                $("#map").html("");
+                Cookies.remove("lat");
+                Cookies.remove("lng");
+                Cookies.set('lat', pos.lat, { expires: 7 });
+                Cookies.set('lng', pos.lng, { expires: 7 });
+                draw(pos);
+            }
+        }
 
         if (url.lat != undefined && url.lng != undefined) {
             var pos = {
                 lat: url.lat,
                 lng: url.lng
             }
-            
+
             console.log("Position in url founded");
+            Cookies.remove("lat");
+            Cookies.remove("lng");
+            Cookies.set('lat', pos.lat, { expires: 7 });
+            Cookies.set('lng', pos.lng, { expires: 7 });
             draw(pos);
-        } else if (navigator.geolocation) {
+        } else {
             console.log("Searching user's geolocation");
             ymaps.geolocation.get().then(success, takeGeoFromCookies);
-        } else {
-            takeGeoFromCookies();
         }
     });
 };
