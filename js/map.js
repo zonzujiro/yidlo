@@ -29,7 +29,7 @@ window.onload = function() {
                     lng: mapState.center[1].toFixed(4)
                 };
 
-            savePosInLocalStorage(pos);
+            savePosToLocalStorage(pos);
             draw(pos);
         };
 
@@ -78,7 +78,7 @@ window.onload = function() {
             });
         }
 
-        function savePosInLocalStorage (pos) {
+        function savePosToLocalStorage (pos) {
             localStorage.removeItem("lat");
             localStorage.removeItem("lng");
             localStorage.setItem('lat', pos.lat, { expires: 7 });
@@ -94,7 +94,7 @@ window.onload = function() {
             
             if (pos.lat != undefined && pos.lng != undefined) {
                 $("#map").html("");
-                savePosInLocalStorage(pos);
+                savePosToLocalStorage(pos);
                 draw(pos);
             }
         }
@@ -106,7 +106,7 @@ window.onload = function() {
             }
 
             console.log("Position in url founded");
-            savePosInLocalStorage(pos);
+            savePosToLocalStorage(pos);
             draw(pos);
         } else {
             console.log("Searching user's geolocation");
