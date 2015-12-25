@@ -18,19 +18,13 @@ window.onload = function() {
         };
 
         function success (position) {
-            var bounds = position.geoObjects.get(0).properties.get('boundedBy'),
-                $container = $('map'),
-                mapState = ymaps.util.bounds.getCenterAndZoom(
-                    bounds,
-                    [$container.width(), $container.height()]
-                ),
-                pos = {
-                    lat: mapState.center[0].toFixed(4),
-                    lng: mapState.center[1].toFixed(4)
+            var pos = {
+                    lat: position.location.lat,
+                    lng: position.location.lng
                 };
 
             savePosToLocalStorage(pos);
-            draw(pos);
+            drawMap(pos);
         };
 
         function takePosFromLocalStorage () {
@@ -41,11 +35,17 @@ window.onload = function() {
                 }
             
             if (pos.lat != undefined && pos.lng != undefined) {
-                draw(pos);
+                drawMap(pos);
             }
         }
 
-        function draw (pos) {
+        function takePosFromGoogleGeoApi () {
+            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (pos) {
+                success(pos);
+            });
+        }
+
+        function drawMap (pos) {
             var map = new ymaps.Map('map', {
                     center: [pos.lat, pos.lng],
                     zoom: 17,
@@ -72,7 +72,7 @@ window.onload = function() {
             map.controls.add(searchControl);
             map.geoObjects.add(user);
 
-            $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + pos.lng + "," + pos.lat + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function(data) {
+            $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + pos.lng + "," + pos.lat + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
                 Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
                 searchControl.search(data.features[Math.floor(Math.random() * data.features.length)].properties.name);
             });
@@ -95,7 +95,7 @@ window.onload = function() {
             if (pos.lat != undefined && pos.lng != undefined) {
                 $("#map").html("");
                 savePosToLocalStorage(pos);
-                draw(pos);
+                drawMap(pos);
             }
         }
 
@@ -107,10 +107,12 @@ window.onload = function() {
 
             console.log("Position in url founded");
             savePosToLocalStorage(pos);
-            draw(pos);
-        } else {
+            drawMap(pos);
+        } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
-            ymaps.geolocation.get().then(success, takePosFromLocalStorage);
+            navigator.geolocation.getCurrentPosition(success, takePosFromGoogleGeoApi);
+        } else {
+            takePosFromLocalStorage();
         }
     });
 };
