@@ -2,7 +2,7 @@ window.onload = function() {
     ymaps.ready(function() {
         var url = parseUrl();
 
-        function parseUrl () {
+        function parseUrl() {
             var urlParam = {},
                 match,
                 pl = /\+/g,
@@ -17,40 +17,63 @@ window.onload = function() {
             return urlParam;
         };
 
-        function success (position) {
+        function success(position) {
             var pos = {
-                    lat: position.coords.latitude.toFixed(5),
-                    lng: position.coords.longitude.toFixed(5)
-                };
+                lat: position.coords.latitude.toFixed(5),
+                lng: position.coords.longitude.toFixed(5)
+            };
 
             savePositionToLocalStorage(pos);
             drawMap(pos);
         };
 
-        function getPositionFromLocalStorage () {
+        function getPositionFromLocalStorage() {
             console.log("Trying to take geo from the local storage");
             var pos = {
-                    lat: localStorage.getItem("lat"),
-                    lng: localStorage.getItem("lng")
-                }
-            
+                lat: localStorage.getItem("lat"),
+                lng: localStorage.getItem("lng")
+            };
+
             if (pos.lat != undefined && pos.lng != undefined) {
                 drawMap(pos);
             }
         }
 
-        function getPositionFromGoogleGeo () {
+        function getPositionFromGoogleGeo() {
             console.log("Trying to find geo with help of Google API");
-            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
-            var pos = {
-                    lat: result.location.lat,
-                    lng: result.location.lng
-                };
+            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function(result) {
+                var pos = {
+                        lat: result.location.lat,
+                        lng: result.location.lng
+                    };
+
+                savePositionToLocalStorage(pos);
                 drawMap(pos);
             });
         }
 
-        function drawMap (pos) {
+        function searchLunch(position) {
+            var config = {
+                    apiKey: 'H3RYBO0RBLHCPXZRBHFCOWP1WY2KMHD5LCS3R1CSAZJN0CYG',
+                    authUrl: 'https://foursquare.com/',
+                    apiUrl: 'https://api.foursquare.com/'
+                };
+
+            function doAuthRedirect() {
+                var redirect = window.location.href.replace(window.location.hash, '');
+                var url = config.authUrl + 'oauth2/authenticate?response_type=token&client_id=' + config.apiKey +
+                    '&redirect_uri=http://zonzujiro.github.io/yidlo/&state=users/self';
+                window.location.href = url;
+            };
+
+            doAuthRedirect();
+            console.log(123);
+            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + window.token + '&v=20140601', {}, function (data) {
+                console.log(data);
+            })
+        }
+
+        function drawMap(pos) {
             var map = new ymaps.Map('map', {
                     center: [pos.lat, pos.lng],
                     zoom: 17,
@@ -71,32 +94,34 @@ window.onload = function() {
                 userPosition = "#lat=" + pos.lat + "&lng=" + pos.lng;
 
             $("#share").html('<p>Посилання друзям: </p><input id="url" type="text" class = "form-control" value="http://zonzujiro.github.io/yidlo' + userPosition + '" readonly="readonly" type="text" id="show" onclick="this.select()">');
-            
-            window.location = window.location.pathname + userPosition;
+
+            // window.location = window.location.pathname + userPosition;
 
             map.controls.add(searchControl);
             map.geoObjects.add(user);
 
-            $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + pos.lng + "," + pos.lat + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function (data) {
-                Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
-                searchControl.search(data.features[Math.floor(Math.random() * data.features.length)].properties.name);
-            });
+            searchLunch(pos);
+
+            // $.getJSON("https://search-maps.yandex.ru/v1/?text=%D0%93%D0%B4%D0%B5%20%D0%BF%D0%BE%D0%B5%D1%81%D1%82%D1%8C&type=biz&lang=uk_UA&ll=" + pos.lng + "," + pos.lat + "&spn=0.013583%2C0.005685&apikey=" + apiKey, {}, function(data) {
+            //     Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
+            //     searchControl.search(data.features[Math.floor(Math.random() * data.features.length)].properties.name);
+            // });
         }
 
-        function savePositionToLocalStorage (pos) {
+        function savePositionToLocalStorage(pos) {
             localStorage.removeItem("lat");
             localStorage.removeItem("lng");
             localStorage.setItem('lat', pos.lat);
             localStorage.setItem('lng', pos.lng);
         }
 
-        window.onhashchange = function () {
+        window.onhashchange = function() {
             var url = parseUrl(),
                 pos = {
                     lat: url.lat,
                     lng: url.lng
                 };
-            
+
             if (pos.lat != undefined && pos.lng != undefined) {
                 $("#map").html("");
                 savePositionToLocalStorage(pos);
@@ -106,9 +131,9 @@ window.onload = function() {
 
         if (url.lat != undefined && url.lng != undefined) {
             var pos = {
-                lat: url.lat,
-                lng: url.lng
-                }
+                    lat: url.lat,
+                    lng: url.lng
+                };
 
             console.log("Position in url founded");
             savePositionToLocalStorage(pos);
