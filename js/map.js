@@ -81,8 +81,8 @@ window.onload = function() {
         function savePosToLocalStorage (pos) {
             localStorage.removeItem("lat");
             localStorage.removeItem("lng");
-            localStorage.setItem('lat', pos.lat, { expires: 7 });
-            localStorage.setItem('lng', pos.lng, { expires: 7 });
+            localStorage.setItem('lat', pos.lat);
+            localStorage.setItem('lng', pos.lng);
         }
 
         window.onhashchange = function () {
@@ -103,7 +103,7 @@ window.onload = function() {
             var pos = {
                 lat: url.lat,
                 lng: url.lng
-            }
+                }
 
             console.log("Position in url founded");
             savePosToLocalStorage(pos);
