@@ -65,9 +65,9 @@ window.onload = function() {
                 
             window.location.href = url;
 
-            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + url.access_token + '&v=20140601', {}, function (data) {
-                console.log(data);
-            })
+            // $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + url.access_token + '&v=20140601', {}, function (data) {
+            //     console.log(data);
+            // })
         }
 
         function drawMap(pos) {
