@@ -23,7 +23,7 @@ window.onload = function() {
                     lng: position.coords.longitude
                 };
 
-            savePosToLocalStorage(pos);
+            savePositionToLocalStorage(pos);
             drawMap(pos);
         };
 
@@ -82,7 +82,7 @@ window.onload = function() {
             });
         }
 
-        function savePosToLocalStorage (pos) {
+        function savePositionToLocalStorage (pos) {
             localStorage.removeItem("lat");
             localStorage.removeItem("lng");
             localStorage.setItem('lat', pos.lat);
@@ -98,7 +98,7 @@ window.onload = function() {
             
             if (pos.lat != undefined && pos.lng != undefined) {
                 $("#map").html("");
-                savePosToLocalStorage(pos);
+                savePositionToLocalStorage(pos);
                 drawMap(pos);
             }
         }
@@ -110,13 +110,14 @@ window.onload = function() {
                 }
 
             console.log("Position in url founded");
-            savePosToLocalStorage(pos);
+            savePositionToLocalStorage(pos);
             drawMap(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
             navigator.geolocation.getCurrentPosition(success, getPositionFromGoogleGeo);
         } else {
-            getPositionFromLocalStorage();
+            // getPositionFromLocalStorage();
+            getPositionFromGoogleGeo();
         }
     });
 };
