@@ -19,15 +19,15 @@ window.onload = function() {
 
         function success (position) {
             var pos = {
-                    lat: position.location.lat,
-                    lng: position.location.lng
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
                 };
 
             savePosToLocalStorage(pos);
             drawMap(pos);
         };
 
-        function takePosFromLocalStorage () {
+        function getPositionFromLocalStorage () {
             console.log("Trying to take geo from the local storage");
             var pos = {
                     lat: localStorage.getItem("lat"),
@@ -39,9 +39,13 @@ window.onload = function() {
             }
         }
 
-        function takePosFromGoogleGeoApi () {
+        function getPositionFromGoogleGeo () {
             $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (pos) {
-                success(pos);
+            var pos = {
+                    lat: position.location.lat,
+                    lng: position.location.lng
+                };
+                drawMap(pos);
             });
         }
 
@@ -110,9 +114,9 @@ window.onload = function() {
             drawMap(pos);
         } else if (navigator.geolocation) {
             console.log("Searching user's geolocation");
-            navigator.geolocation.getCurrentPosition(success, takePosFromGoogleGeoApi);
+            navigator.geolocation.getCurrentPosition(success, getPositionFromGoogleGeo);
         } else {
-            takePosFromLocalStorage();
+            getPositionFromLocalStorage();
         }
     });
 };
