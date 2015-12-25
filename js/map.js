@@ -59,21 +59,13 @@ window.onload = function() {
                     apiUrl: 'https://api.foursquare.com/'
                 };
 
-            function doAuthRedirect() {
-                var redirect = window.location.href.replace(window.location.hash, '');
-                var url = config.authUrl + 'oauth2/authenticate?response_type=token&client_id=' + config.apiKey +
-                    '&redirect_uri=' + encodeURIComponent(redirect) + '&state=users/self';
-                window.location.href = url;
-            };
+            var redirect = window.location.href.replace(window.location.hash, '');
+            var url = config.authUrl + 'oauth2/authenticate?response_type=token&client_id=' + config.apiKey +
+                '&redirect_uri=' + encodeURIComponent(redirect) + '&state=users/self';
+                
+            window.location.href = url;
 
-            doAuthRedirect();
-            console.log(123);
-
-            var token = url.access_token;
-
-            console.log(token);
-
-            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + token + '&v=20140601', {}, function (data) {
+            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + url.access_token + '&v=20140601', {}, function (data) {
                 console.log(data);
             })
         }
