@@ -120,19 +120,19 @@ window.onload = function() {
             localStorage.setItem('lng', pos.lng);
         }
 
-        window.onhashchange = function() {
-            var url = parseUrl(),
-                pos = {
-                    lat: url.lat,
-                    lng: url.lng
-                };
+        // window.onhashchange = function() {
+        //     var url = parseUrl(),
+        //         pos = {
+        //             lat: url.lat,
+        //             lng: url.lng
+        //         };
 
-            if (pos.lat != undefined && pos.lng != undefined) {
-                $("#map").html("");
-                savePositionToLocalStorage(pos);
-                drawMap(pos);
-            }
-        }
+        //     if (pos.lat != undefined && pos.lng != undefined) {
+        //         $("#map").html("");
+        //         savePositionToLocalStorage(pos);
+        //         drawMap(pos);
+        //     }
+        // }
 
         if (url.lat != undefined && url.lng != undefined) {
             var pos = {
