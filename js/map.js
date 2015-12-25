@@ -68,7 +68,12 @@ window.onload = function() {
 
             doAuthRedirect();
             console.log(123);
-            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + window.token + '&v=20140601', {}, function (data) {
+
+            var token = url.access_token;
+
+            console.log(token);
+
+            $.getJSON(config.apiUrl + 'v2/venues/explore?ll=' + position.lat + ',' + position.lng + '&oauth_token=' + token + '&v=20140601', {}, function (data) {
                 console.log(data);
             })
         }
