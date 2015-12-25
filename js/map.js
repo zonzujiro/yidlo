@@ -41,10 +41,10 @@ window.onload = function() {
 
         function getPositionFromGoogleGeo () {
             console.log("Trying to take geo from with help of Google API");
-            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (pos) {
+            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
             var pos = {
-                    lat: position.location.lat,
-                    lng: position.location.lng
+                    lat: result.location.lat,
+                    lng: result.location.lng
                 };
                 drawMap(pos);
             });
