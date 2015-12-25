@@ -62,7 +62,7 @@ window.onload = function() {
             function doAuthRedirect() {
                 var redirect = window.location.href.replace(window.location.hash, '');
                 var url = config.authUrl + 'oauth2/authenticate?response_type=token&client_id=' + config.apiKey +
-                    '&redirect_uri=http://zonzujiro.github.io/yidlo/&state=users/self';
+                    '&redirect_uri=' + encodeURIComponent(redirect) + '&state=users/self';
                 window.location.href = url;
             };
 
