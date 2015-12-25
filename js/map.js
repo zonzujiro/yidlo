@@ -108,11 +108,9 @@ window.onload = function() {
             console.log("Position in url founded");
             savePosToLocalStorage(pos);
             draw(pos);
-        } else if (navigator.geolocation) {
+        } else {
             console.log("Searching user's geolocation");
             ymaps.geolocation.get().then(success, takePosFromLocalStorage);
-        } else {
-            takePosFromLocalStorage();
         }
     });
 };
