@@ -50,10 +50,13 @@ window.onload = function() {
                 askGoogle.then(function (pos) {
                     googleGeoPosition = pos;
                     resolve();
-                })    
+                });
             });
             
             search.then(function () {
+                console.log(navigatorPosition);
+                console.log(googleGeoPosition);
+
                 if (navigatorPosition.accuracy == undefined) {
                     drawMap(googleGeoPosition);
                 } else if (navigatorPosition.accuracy < googleGeoPosition.accuracy) {
