@@ -23,16 +23,15 @@ window.onload = function() {
 
             var search = new Promise(function (resolve, reject) {
                 var askNavigator = new Promise(function (resolve, reject) {
-                    var position;
-
                         navigator.geolocation.getCurrentPosition(function (result) {
-                            position = {
+                            var position = {
                                     lat: result.coords.latitude.toFixed(5),
                                     lng: result.coords.longitude.toFixed(5),
                                     accuracy: result.accuracy
                                 };
+                                
+                            resolve(position);
                         });                
-                        resolve(position);
                     }),
                     askGoogle = new Promise(function (resolve, reject) {
                         $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
@@ -69,15 +68,15 @@ window.onload = function() {
             });
         }
 
-        // function success(position) {
-        //     var pos = {
-        //             lat: position.coords.latitude.toFixed(5),
-        //             lng: position.coords.longitude.toFixed(5)
-        //         };
+        function success(position) {
+            var pos = {
+                    lat: position.coords.latitude.toFixed(5),
+                    lng: position.coords.longitude.toFixed(5)
+                };
 
-        //     savePositionToLocalStorage(pos);
-        //     drawMap(pos);
-        // };
+            savePositionToLocalStorage(pos);
+            drawMap(pos);
+        };
 
         function getPositionFromLocalStorage() {
             console.log("Trying to take geo from the local storage");
@@ -91,18 +90,18 @@ window.onload = function() {
             }
         }
 
-        // function getPositionFromGoogleGeo() {
-        //     console.log("Trying to find geo with help of Google API");
-        //     $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function(result) {
-        //         var pos = {
-        //                 lat: result.location.lat,
-        //                 lng: result.location.lng
-        //             };
+        function getPositionFromGoogleGeo() {
+            console.log("Trying to find geo with help of Google API");
+            $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function(result) {
+                var pos = {
+                        lat: result.location.lat,
+                        lng: result.location.lng
+                    };
 
-        //         savePositionToLocalStorage(pos);
-        //         drawMap(pos);
-        //     });
-        // }
+                savePositionToLocalStorage(pos);
+                drawMap(pos);
+            });
+        }
 
         function searchLunch (position) {
             var result, 
@@ -316,8 +315,8 @@ window.onload = function() {
             drawMap(pos);
         } else {
             console.log("Searching user's geolocation");
-            // navigator.geolocation.getCurrentPosition(success, getPositionFromGoogleGeo);
-            searchUserPosition();
+            navigator.geolocation.getCurrentPosition(success, getPositionFromGoogleGeo);
+            // searchUserPosition();
         }
     });
 };
