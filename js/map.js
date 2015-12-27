@@ -23,14 +23,16 @@ window.onload = function() {
 
             var search = new Promise(function (resolve, reject) {
                 var askNavigator = new Promise(function (resolve, reject) {
+                    var position;
+
                         navigator.geolocation.getCurrentPosition(function (result) {
-                            var position = {
+                            position = {
                                     lat: result.coords.latitude.toFixed(5),
                                     lng: result.coords.longitude.toFixed(5),
                                     accuracy: result.accuracy
                                 };
-                            resolve(position);
                         });                
+                        resolve(position);
                     }),
                     askGoogle = new Promise(function (resolve, reject) {
                         $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
