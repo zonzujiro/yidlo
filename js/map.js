@@ -20,13 +20,11 @@ window.onload = function() {
        function searchUserPosition () {
             var search = [
                 new Promise(function (resolve, reject) {
-                    // var position;
-
                     function succes (result) {
                         var position = {
                             lat: result.coords.latitude.toFixed(5),
                             lng: result.coords.longitude.toFixed(5),
-                            accuracy: result.accuracy
+                            accuracy: result.coords.accuracy
                         }; 
                         resolve(position);
                     };
