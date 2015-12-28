@@ -22,7 +22,7 @@ window.onload = function() {
                 new Promise(function (resolve, reject) {
                     // var position;
 
-                    function succes (pos) {
+                    function succes (result) {
                         var position = {
                             lat: result.coords.latitude.toFixed(5),
                             lng: result.coords.longitude.toFixed(5),
