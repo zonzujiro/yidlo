@@ -20,18 +20,23 @@ window.onload = function() {
        function searchUserPosition () {
             var search = [
                 new Promise(function (resolve, reject) {
-                    navigator.geolocation.getCurrentPosition(function (result) {
+                    // var position;
+
+                    function succes (pos) {
                         var position = {
                             lat: result.coords.latitude.toFixed(5),
                             lng: result.coords.longitude.toFixed(5),
                             accuracy: result.accuracy
-                        };
-
+                        }; 
                         resolve(position);
-                    }, function (error) {
+                    };
+
+                    function error (error) {
                         console.error(error);
                         resolve(undefined);
-                    });
+                    };
+
+                    navigator.geolocation.getCurrentPosition(succes, error);
                 }),
                 new Promise(function (resolve, reject) {
                     $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
