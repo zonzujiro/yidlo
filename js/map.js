@@ -17,54 +17,47 @@ window.onload = function() {
             return urlParam;
         };
 
-        function searchUserPosition () {
-            var navigatorPosition = {},
-                googleGeoPosition = {};
+       function searchUserPosition () {
+            var search = [
+                new Promise(function (resolve, reject) {
+                    navigator.geolocation.getCurrentPosition(function (result) {
+                        var position = {
+                            lat: result.coords.latitude.toFixed(5),
+                            lng: result.coords.longitude.toFixed(5),
+                            accuracy: result.accuracy
+                        };
 
-            var search = new Promise(function (resolve, reject) {
-                var askNavigator = new Promise(function (resolve, reject) {
-                        navigator.geolocation.getCurrentPosition(function (result) {
-                            var position = {
-                                    lat: result.coords.latitude.toFixed(5),
-                                    lng: result.coords.longitude.toFixed(5),
-                                    accuracy: result.accuracy
-                                };
-                                
-                            resolve(position);
-                        });                
-                    }),
-                    askGoogle = new Promise(function (resolve, reject) {
-                        $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
-                            var position = {
-                                    lat: result.location.lat.toFixed(5),
-                                    lng: result.location.lng.toFixed(5),
-                                    accuracy: result.accuracy
-                                };
-                            resolve(position);
-                        });                
+                        resolve(position);
+                    }, function (error) {
+                        console.error(error);
+                        resolve(undefined);
                     });
+                }),
+                new Promise(function (resolve, reject) {
+                    $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
+                        var position = {
+                            lat: result.location.lat.toFixed(5),
+                            lng: result.location.lng.toFixed(5),
+                            accuracy: result.accuracy
+                        };
+                        resolve(position);
+                    });
+                })
+            ];
 
-                askNavigator.then(function (pos) {
-                    navigatorPosition = pos;
-                });
+            Promise.all(search).then(function (location) {
+                var navigatorPosition = location[0],
+                    googlePosition = location[1];
 
-                askGoogle.then(function (pos) {
-                    googleGeoPosition = pos;
-                    resolve();
-                });
-            });
-            
-            search.then(function () {
-                console.log(navigatorPosition);
-                console.log(googleGeoPosition);
-
-                if (navigatorPosition.accuracy == undefined) {
-                    drawMap(googleGeoPosition);
-                } else if (navigatorPosition.accuracy < googleGeoPosition.accuracy) {
+                if (navigatorPosition == undefined) {
+                    drawMap(googlePosition);
+                } else if (navigatorPosition.accuracy < googlePosition.accuracy) {
                     drawMap(navigatorPosition);
                 } else {
-                    drawMap(googleGeoPosition);
+                    drawMap(googlePosition);
                 }
+            }).catch(function (error) {
+                console.log(error);
             });
         }
 
