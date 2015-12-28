@@ -19,34 +19,34 @@ window.onload = function() {
 
        function searchUserPosition () {
             var search = [
-                new Promise(function (resolve, reject) {
-                    function succes (result) {
-                        var position = {
-                            lat: result.coords.latitude.toFixed(5),
-                            lng: result.coords.longitude.toFixed(5),
-                            accuracy: result.coords.accuracy
-                        }; 
-                        resolve(position);
-                    };
-
-                    function error (error) {
-                        console.error(error);
-                        resolve(undefined);
-                    };
-
-                    navigator.geolocation.getCurrentPosition(succes, error);
-                }),
-                new Promise(function (resolve, reject) {
-                    $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
-                        var position = {
-                            lat: result.location.lat.toFixed(5),
-                            lng: result.location.lng.toFixed(5),
-                            accuracy: result.accuracy
+                    new Promise(function (resolve, reject) {
+                        function succes (result) {
+                            var position = {
+                                lat: result.coords.latitude.toFixed(5),
+                                lng: result.coords.longitude.toFixed(5),
+                                accuracy: result.coords.accuracy
+                            }; 
+                            resolve(position);
                         };
-                        resolve(position);
-                    });
-                })
-            ];
+
+                        function error (error) {
+                            console.error(error);
+                            resolve(undefined);
+                        };
+
+                        navigator.geolocation.getCurrentPosition(succes, error);
+                    }),
+                    new Promise(function (resolve, reject) {
+                        $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function (result) {
+                            var position = {
+                                lat: result.location.lat.toFixed(5),
+                                lng: result.location.lng.toFixed(5),
+                                accuracy: result.accuracy
+                            };
+                            resolve(position);
+                        });
+                    })
+                ];
 
             Promise.all(search).then(function (location) {
                 var navigatorPosition = location[0],
@@ -178,6 +178,8 @@ window.onload = function() {
                              * @name applyElementOffset
                              */
                             applyElementOffset: function () {
+                                console.log(this._$element);
+
                                 this._$element.css({
                                     left: -(this._$element[0].offsetWidth / 2),
                                     top: -(this._$element[0].offsetHeight + this._$element.find('.arrow')[0].offsetHeight)
