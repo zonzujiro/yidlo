@@ -88,7 +88,7 @@ window.onload = function() {
             }
         }
 
-        function drawPlaceForLunch(position) {
+        function drawPlaceForLunch(pos) {
             var client = {
                     id: "client_id=H3RYBO0RBLHCPXZRBHFCOWP1WY2KMHD5LCS3R1CSAZJN0CYG",
                     secret: "client_secret=EGDRPYC3SKAZMJJPU2XODXUEZLFGUFYIB5X3KIEZOSQLTXU1"
@@ -96,7 +96,7 @@ window.onload = function() {
                 BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
                     '<div id="baloon">' +
                         '<div id="header">' +
-                            '<h3>$[properties.name]</h3><br />' +
+                            '<h3>$[properties.name]</h3><img src="{{properties.icon}}"><br />' +
                         '</div>' + 
                         '<div id="photo">' +
                             '<img src="$[properties.photo]"><br />' +
@@ -139,7 +139,7 @@ window.onload = function() {
                         preset: "islands#blueCircleDotIcon"
                     });
 
-                console.log(venue);
+                // console.log(venue);
                 map.geoObjects.add(lunch);
                 lunch.balloon.open();
             });
