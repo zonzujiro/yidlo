@@ -24,10 +24,11 @@ window.onload = function() {
                 new Promise(function(resolve, reject) {
                     function succes(result) {
                         var position = {
-                            lat: result.coords.latitude.toFixed(5),
-                            lng: result.coords.longitude.toFixed(5),
-                            accuracy: result.coords.accuracy
-                        };
+                                lat: result.coords.latitude.toFixed(5),
+                                lng: result.coords.longitude.toFixed(5),
+                                accuracy: result.coords.accuracy
+                            };
+
                         resolve(position);
                     };
 
@@ -41,10 +42,10 @@ window.onload = function() {
                 new Promise(function(resolve, reject) {
                     $.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU", {}, function(result) {
                         var position = {
-                            lat: result.location.lat.toFixed(5),
-                            lng: result.location.lng.toFixed(5),
-                            accuracy: result.accuracy
-                        };
+                                lat: result.location.lat.toFixed(5),
+                                lng: result.location.lng.toFixed(5),
+                                accuracy: result.accuracy
+                            };
 
                         resolve(position);
                     });
@@ -52,24 +53,23 @@ window.onload = function() {
             ];
 
             Promise.all(search).then(function(location) {
-                var navigatorPosition = location[0],
+                var choosedPosition,
+                    navigatorPosition = location[0],
                     googlePosition = location[1];
 
                 if (navigatorPosition == undefined) {
-                    updateCurrentUrl(googlePosition);
-                    drawMap(googlePosition);
-                    drawPlaceForLunch(googlePosition);
+                    choosedPosition = googlePosition;
                 } else if (navigatorPosition.accuracy < googlePosition.accuracy) {
-                    updateCurrentUrl(navigatorPosition);
-                    drawMap(navigatorPosition);
-                    drawPlaceForLunch(navigatorPosition);
+                    choosedPosition = navigatorPosition;
                 } else {
-                    updateCurrentUrl(googlePosition);
-                    drawMap(googlePosition);
-                    drawPlaceForLunch(googlePosition);
+                    choosedPosition = googlePosition;
                 }
+
+                updateCurrentUrl(choosedPosition);
+                drawMap(choosedPosition);
+                drawPlaceForLunch(choosedPosition);
             }).catch(function(error) {
-                console.log(error);
+                console.error(error);
                 getPositionFromLocalStorage();
             });
         }
@@ -77,9 +77,9 @@ window.onload = function() {
         function getPositionFromLocalStorage() {
             // console.log("Trying to take geo from the local storage");
             var pos = {
-                lat: localStorage.getItem("lat"),
-                lng: localStorage.getItem("lng")
-            };
+                    lat: localStorage.getItem("lat"),
+                    lng: localStorage.getItem("lng")
+                };
 
             if (pos.lat != undefined && pos.lng != undefined) {
                 updateCurrentUrl(pos);
@@ -102,7 +102,7 @@ window.onload = function() {
                             '$[properties.category]<br />' +
                             '$[properties.hours]<br />' +
                             '$[properties.price]<br />' +
-                            // '$[properties.location]<br />' +
+                            '$[properties.location] $[properties.metro]<br />' +
                             'Рейтинг на Foursquare: $[properties.rating]<br />' +
                             'Расстояние в метрах: $[properties.distance]<br />' +
                             '<a href="$[properties.url]">$[properties.url]</a><br />' +
@@ -126,7 +126,7 @@ window.onload = function() {
                 },
                 searchPlaceForLunch = new Promise(function (resolve, reject) {
                      $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1', {}, function(data) {
-                        if (!data.response.totalResluts) {
+                        if (!data.response.totalResults) {
                             reject();
                         } else {
                             Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
@@ -138,7 +138,7 @@ window.onload = function() {
 
                 searchPlaceForLunch.then(function (venue) {
                     var lunch,
-                        templateOptions = {
+                        contentOptions = {
                             hours: venue.hours.status,
                             icon: venue.categories[0].icon.prefix + "bg_44" + venue.categories[0].icon.suffix,
                             name: venue.name,
@@ -149,12 +149,12 @@ window.onload = function() {
                             distance: venue.location.distance,
                             url: venue.url
                         };
-
+                        
                     if (venue.photos.count > 0) {
-                        templateOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
-                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                        contentOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
+                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], contentOptions, balloonOptions);   
                     } else {
-                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], contentOptions, balloonOptions);   
                     }
 
                     map.geoObjects.add(lunch);
@@ -164,7 +164,7 @@ window.onload = function() {
                         Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
                         var lunch,
                             venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue,
-                            templateOptions = {
+                            contentOptions = {
                                 icon: venue.categories[0].icon.prefix + "bg_44" + venue.categories[0].icon.suffix,
                                 name: venue.name,
                                 rating: venue.rating,
@@ -172,14 +172,15 @@ window.onload = function() {
                                 price: venue.price.message,
                                 location: venue.location.address,
                                 distance: venue.location.distance,
-                                url: venue.url
+                                url: venue.url,
+                                metro: venue.location.state
                             };
                         
                         if (venue.photos.count > 0) {
-                            templateOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
-                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                            contentOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
+                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], contentOptions, balloonOptions);   
                         } else {
-                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], contentOptions, balloonOptions);   
                         }
 
                         map.geoObjects.add(lunch);
@@ -235,9 +236,9 @@ window.onload = function() {
 
         if (url.lat != undefined && url.lng != undefined) {
             var pos = {
-                lat: url.lat,
-                lng: url.lng
-            };
+                    lat: url.lat,
+                    lng: url.lng
+                };
 
             // console.log("Position in url founded");
             updateCurrentUrl(pos);
