@@ -197,7 +197,7 @@ window.onload = function() {
             map = new ymaps.Map('map', {
                 center: [pos.lat, pos.lng],
                 zoom: 17,
-                controls: [],
+                controls: ["zoomControl", "fullscreenControl"],
                 behaviors: ['default', 'scrollZoom']
             });
 
