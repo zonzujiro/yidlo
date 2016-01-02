@@ -89,7 +89,11 @@ window.onload = function() {
         }
 
         function drawPlaceForLunch(pos) {
-            var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+            var client = {
+                    id: "client_id=H3RYBO0RBLHCPXZRBHFCOWP1WY2KMHD5LCS3R1CSAZJN0CYG",
+                    secret: "client_secret=EGDRPYC3SKAZMJJPU2XODXUEZLFGUFYIB5X3KIEZOSQLTXU1"
+                },
+                BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
                     '<div id="baloon">' +
                         '<div id="header">' +
                             '<h3>$[properties.name]</h3><br />' +
@@ -100,7 +104,7 @@ window.onload = function() {
                         '<div id="info"><p>' +
                         // '<img src="{{properties.icon}}"><br />' +
                             '$[properties.category]<br />' +
-                            '$[properties.hours]<br />' +
+                            // '$[properties.hours]<br />' +
                             '$[properties.price]<br />' +
                             // '$[properties.location]<br />' +
                             'Рейтинг на Foursquare: $[properties.rating]<br />' +
@@ -112,73 +116,33 @@ window.onload = function() {
                         build: function() {
                             BalloonContentLayout.superclass.build.call(this);
                         },
-                    }),
-                balloonOptions = {
-                    balloonContentLayout: BalloonContentLayout,
-                    hideIconOnBalloonOpen: false,
-                    balloonOffset: [1, -15],
-                    preset: "islands#blueCircleDotIcon"
-                };
-
-            var client = {
-                    id: "client_id=H3RYBO0RBLHCPXZRBHFCOWP1WY2KMHD5LCS3R1CSAZJN0CYG",
-                    secret: "client_secret=EGDRPYC3SKAZMJJPU2XODXUEZLFGUFYIB5X3KIEZOSQLTXU1"
-                },
-                searchPlaceForLunch = new Promise(function (resolve, reject) {
-                     $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1', {}, function(data) {
-                        if (!data.response.totalResluts) {
-                            reject();
-                        } else {
-                            Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
-                            var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue;
-                            resolve(venue);
-                        }
                     });
-                });
 
-                searchPlaceForLunch.then(function (venue) {
-                    var lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], {
+            $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&price=1,2&venuePhotos=1', {}, function(data) {
+                    Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
+                    var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue,
+                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], {
                             photo: venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix,
                             icon: venue.categories[0].icon.prefix + "bg_44" + venue.categories[0].icon.suffix,
                             name: venue.name,
                             rating: venue.rating,
                             category: venue.categories[0].name,
-                            hours: venue.hours.status,
+                            // hours: venue.hours.status,
                             price: venue.price.message,
                             location: venue.location.address,
                             distance: venue.location.distance,
                             url: venue.url
-                        }, balloonOptions);
+                        }, {
+                            balloonContentLayout: BalloonContentLayout,
+                            hideIconOnBalloonOpen: false,
+                            balloonOffset: [1, -15],
+                            preset: "islands#blueCircleDotIcon"
+                        });
 
+                    console.log(venue);
                     map.geoObjects.add(lunch);
                     lunch.balloon.open();
-                }).catch(function() {
-                    $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&price=1,2&venuePhotos=1', {}, function(data) {
-                        Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
-                        var lunch,
-                            venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue,
-                            templateOptions = {
-                                icon: venue.categories[0].icon.prefix + "bg_44" + venue.categories[0].icon.suffix,
-                                name: venue.name,
-                                rating: venue.rating,
-                                category: venue.categories[0].name,
-                                price: venue.price.message,
-                                location: venue.location.address,
-                                distance: venue.location.distance,
-                                url: venue.url
-                            };
-                        
-                        if (venue.photos.count > 0) {
-                            options.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
-                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
-                        } else {
-                            lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
-                        }
-
-                        map.geoObjects.add(lunch);
-                        lunch.balloon.open();
-                    })    
-                });
+            });
         }
 
         function drawMap(pos) {
