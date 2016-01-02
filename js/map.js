@@ -137,18 +137,25 @@ window.onload = function() {
                 });
 
                 searchPlaceForLunch.then(function (venue) {
-                    var lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], {
-                            photo: venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix,
+                    var lunch,
+                        templateOptions = {
+                            hours: venue.hours.status,
                             icon: venue.categories[0].icon.prefix + "bg_44" + venue.categories[0].icon.suffix,
                             name: venue.name,
                             rating: venue.rating,
                             category: venue.categories[0].name,
-                            hours: venue.hours.status,
                             price: venue.price.message,
                             location: venue.location.address,
                             distance: venue.location.distance,
                             url: venue.url
-                        }, balloonOptions);
+                        };
+
+                    if (venue.photos.count > 0) {
+                        templateOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
+                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                    } else {
+                        lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], templateOptions, balloonOptions);   
+                    }
 
                     map.geoObjects.add(lunch);
                     lunch.balloon.open();
@@ -177,7 +184,7 @@ window.onload = function() {
 
                         map.geoObjects.add(lunch);
                         lunch.balloon.open();
-                    })    
+                    })
                 });
         }
 
