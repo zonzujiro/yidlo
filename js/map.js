@@ -131,6 +131,7 @@ window.onload = function() {
                         } else {
                             Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
                             var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue;
+                            console.log(data);
                             resolve(venue);
                         }
                     });
@@ -149,8 +150,6 @@ window.onload = function() {
                             distance: venue.location.distance,
                             url: venue.url
                         };
-                        
-                        console.log(venue);
                         
                     if (venue.photos.count > 0) {
                         contentOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
