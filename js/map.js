@@ -150,6 +150,8 @@ window.onload = function() {
                             url: venue.url
                         };
                         
+                        console.log(venue);
+                        
                     if (venue.photos.count > 0) {
                         contentOptions.photo = venue.photos.groups[0].items[0].prefix + "150x150" + venue.photos.groups[0].items[0].suffix;
                         lunch = new ymaps.Placemark([venue.location.lat, venue.location.lng], contentOptions, balloonOptions);   
