@@ -17,7 +17,7 @@ window.onload = function() {
             }
 
             return urlParam;
-        };
+        }
 
         function searchUserPosition() {
             var search = [
@@ -30,12 +30,12 @@ window.onload = function() {
                             };
 
                         resolve(position);
-                    };
+                    }
 
                     function error(error) {
                         console.error(error);
                         resolve(undefined);
-                    };
+                    }
 
                     navigator.geolocation.getCurrentPosition(succes, error);
                 }),
@@ -131,6 +131,7 @@ window.onload = function() {
                         } else {
                             Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
                             var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue;
+                            console.log(data.response.groups[0].items.map((i) => i.venue.name));
                             resolve(venue);
                         }
                     });
