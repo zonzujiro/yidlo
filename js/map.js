@@ -57,7 +57,7 @@ window.onload = function() {
                     navigatorPosition = location[0],
                     googlePosition = location[1];
 
-                if (navigatorPosition == undefined) {
+                if (!navigatorPosition) {
                     choosedPosition = googlePosition;
                 } else if (navigatorPosition.accuracy < googlePosition.accuracy) {
                     choosedPosition = navigatorPosition;
@@ -81,7 +81,7 @@ window.onload = function() {
                     lng: localStorage.getItem("lng")
                 };
 
-            if (pos.lat != undefined && pos.lng != undefined) {
+            if (pos.lat && pos.lng) {
                 updateCurrentUrl(pos);
                 drawMap(pos);
                 drawPlaceForLunch(pos);
@@ -125,7 +125,9 @@ window.onload = function() {
                     secret: "client_secret=EGDRPYC3SKAZMJJPU2XODXUEZLFGUFYIB5X3KIEZOSQLTXU1"
                 },
                 searchPlaceForLunch = new Promise(function (resolve, reject) {
-                     $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1', {}, function(data) {
+                    var url = 'https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1';
+
+                    $.getJSON(url, {}, function(data) {
                         if (!data.response.totalResults) {
                             reject();
                         } else {
@@ -186,7 +188,7 @@ window.onload = function() {
 
                         map.geoObjects.add(lunch);
                         lunch.balloon.open();
-                    })
+                    });
                 });
         }
 
@@ -226,16 +228,16 @@ window.onload = function() {
                     lng: url.lng
                 };
 
-            if (pos.lat != undefined && pos.lng != undefined) {
+            if (pos.lat && pos.lng) {
                 $("#map").html("");
                 savePositionToLocalStorage(pos);
                 updateCurrentUrl(pos);
                 drawMap(pos);
                 drawPlaceForLunch(pos);
-            };
-        }
+            }
+        };
 
-        if (url.lat != undefined && url.lng != undefined) {
+        if (url.lat && url.lng) {
             var pos = {
                     lat: url.lat,
                     lng: url.lng
