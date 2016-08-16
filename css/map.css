@@ -19,33 +19,80 @@
     float: left;
 }
 
+#share {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
 #share #url {
-    font-family: "Trebuchet MS","Verdana",Arial,"Bitstream Vera Sans",sans-serif;
-    font-size: .95em;
-    margin-bottom: .8em;
-    padding: 3px 2px;
+    cursor: pointer;
+    font: 15px Open Sans,Arial,Helvetica,sans-serif;
+}
+input {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
-#share p {
-    margin-bottom: 2px;
+h1 {
+    font: 70px Open Sans,Arial,Helvetica,sans-serif;
 }
 
-#top {
-    margin: 0;
-    padding: 4px;
+#form-container {
+    display: table-cell;
+    width: inherit;
+    height: inherit;
+    vertical-align: middle;
+    text-align: center;
 }
 
-#top li {
-    display: inline-block!important;
-    margin-right: 5px;
-    padding: 3px;
+#form {
+    display: inline-block;
+    width: inherit;
+    height: 50%;
+}
+
+#left-column {
+    display: inline-block;
+    vertical-align: top;
+    width: 39vw;
+    height: 100vh;
+}
+
+#right-column {
+    display: inline-block;
+    width: 58vw;
+    height: 100vh;
 }
 
 #map {
-    width: 100%; 
-    height: 600px;
-    margin-right: auto;
-    margin-left: auto;
+/*    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+    width: 100%;
+    height: 100vh;
+    /*z-index: -1;*/
 }
 
 #header {
