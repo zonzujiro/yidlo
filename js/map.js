@@ -1,5 +1,5 @@
 window.onload = function() {
-    ymaps.ready(function() {
+    DG.then(function() {
         var map, url = parseUrl();
 
         function parseUrl() {
@@ -81,7 +81,7 @@ window.onload = function() {
                     lng: localStorage.getItem("lng")
                 };
 
-            if (pos.lat != undefined && pos.lng != undefined) {
+            if (pos.lat && pos.lng) {
                 updateCurrentUrl(pos);
                 drawMap(pos);
                 drawPlaceForLunch(pos);
@@ -89,51 +89,58 @@ window.onload = function() {
         }
 
         function drawPlaceForLunch(pos) {
-            var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                    '<div id="baloon">' +
-                        '<div id="header">' +
-                            '<h3>$[properties.name]</h3><br />' +
-                        '</div>' + 
-                        '<div id="photo">' +
-                            '<img src="$[properties.photo]"><br />' +
-                        '</div>' +
-                        '<div id="info"><p>' +
-                        // '<img src="{{properties.icon}}"><br />' +
-                            '$[properties.category]<br />' +
-                            '$[properties.hours]<br />' +
-                            '$[properties.price]<br />' +
-                            '$[properties.location] $[properties.metro]<br />' +
-                            'Рейтинг на Foursquare: $[properties.rating]<br />' +
-                            'Расстояние в метрах: $[properties.distance]<br />' +
-                            '<a href="$[properties.url]">$[properties.url]</a><br />' +
-                        '</p></div>' +
-                    '</div>', {
+            // var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+            //         '<div id="baloon">' +
+            //             '<div id="header">' +
+            //                 '<h3>$[properties.name]</h3><br />' +
+            //             '</div>' + 
+            //             '<div id="photo">' +
+            //                 '<img src="$[properties.photo]"><br />' +
+            //             '</div>' +
+            //             '<div id="info"><p>' +
+            //             // '<img src="{{properties.icon}}"><br />' +
+            //                 '$[properties.category]<br />' +
+            //                 '$[properties.hours]<br />' +
+            //                 '$[properties.price]<br />' +
+            //                 '$[properties.location] $[properties.metro]<br />' +
+            //                 'Рейтинг на Foursquare: $[properties.rating]<br />' +
+            //                 'Расстояние в метрах: $[properties.distance]<br />' +
+            //                 '<a href="$[properties.url]">$[properties.url]</a><br />' +
+            //             '</p></div>' +
+            //         '</div>', {
 
-                        build: function() {
-                            BalloonContentLayout.superclass.build.call(this);
-                        },
-                    }),
-                balloonOptions = {
-                    balloonContentLayout: BalloonContentLayout,
-                    hideIconOnBalloonOpen: false,
-                    balloonOffset: [1, -15],
-                    preset: "islands#blueCircleDotIcon"
-                };
+            //             build: function() {
+            //                 BalloonContentLayout.superclass.build.call(this);
+            //             },
+            //         }),
+            //     balloonOptions = {
+            //         balloonContentLayout: BalloonContentLayout,
+            //         hideIconOnBalloonOpen: false,
+            //         balloonOffset: [1, -15],
+            //         preset: "islands#blueCircleDotIcon"
+            //     };
 
             var client = {
                     id: "client_id=H3RYBO0RBLHCPXZRBHFCOWP1WY2KMHD5LCS3R1CSAZJN0CYG",
                     secret: "client_secret=EGDRPYC3SKAZMJJPU2XODXUEZLFGUFYIB5X3KIEZOSQLTXU1"
                 },
-                searchPlaceForLunch = new Promise(function (resolve, reject) {
-                     $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1', {}, function(data) {
-                        if (!data.response.totalResults) {
-                            reject();
-                        } else {
-                            Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
-                            var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue;
-                            console.log(data.response.groups[0].items.map(function (i) { if (i != undefined) { return i.venue.name }}));
-                            resolve(venue);
-                        }
+                // searchPlaceForLunch = new Promise(function (resolve, reject) {
+                //      $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + pos.lat + ',' + pos.lng + '&' + client.id + '&' + client.secret + '&v=20140601&section=food&radius=1000&openNow=1&price=1,2&venuePhotos=1', {}, function(data) {
+                //         if (!data.response.totalResults) {
+                //             reject();
+                //         } else {
+                //             Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
+                //             var venue = data.response.groups[0].items[Math.floor(Math.random() * data.response.groups[0].items.length)].venue;
+                //             console.log(data.response.groups[0].items.map(function (i) { if (i) { return i.venue.name }}));
+                //             resolve(venue);
+                //         }
+                //     });
+                // });
+                searchPlaceForLunch = new Promise(function(resolve, reject) {
+                    var url = 'http://catalog.api.2gis.ru/geo/search/Поесть?q=' + pos.lat + ',' + pos.lng + '&radius=200&format=short&limit=2000&version=1.3';
+                    
+                    $.getJSON(url, {}, function(response) {
+                        console.log(response);
                     });
                 });
 
@@ -186,23 +193,17 @@ window.onload = function() {
 
                         map.geoObjects.add(lunch);
                         lunch.balloon.open();
-                    })
+                    });
                 });
         }
 
         function drawMap(pos) {
-            var user = new ymaps.Placemark([pos.lat, pos.lng], {}, {
-                    preset: "islands#geolocationIcon"
-                });
-
-            map = new ymaps.Map('map', {
-                center: [pos.lat, pos.lng],
-                zoom: 17,
-                controls: ["zoomControl", "fullscreenControl"],
-                behaviors: ['default', 'scrollZoom']
+            map = DG.map('map', {
+                'center': [pos.lat, pos.lng],
+                'zoom': 15
             });
 
-            map.geoObjects.add(user);
+            DG.marker([pos.lat, pos.lng]).addTo(map);
         }
 
         function savePositionToLocalStorage(pos) {
@@ -226,16 +227,16 @@ window.onload = function() {
                     lng: url.lng
                 };
 
-            if (pos.lat != undefined && pos.lng != undefined) {
+            if (pos.lat && pos.lng) {
                 $("#map").html("");
                 savePositionToLocalStorage(pos);
                 updateCurrentUrl(pos);
                 drawMap(pos);
                 drawPlaceForLunch(pos);
-            };
-        }
+            }
+        };
 
-        if (url.lat != undefined && url.lng != undefined) {
+        if (url.lat && url.lng) {
             var pos = {
                     lat: url.lat,
                     lng: url.lng
