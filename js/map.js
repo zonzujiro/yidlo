@@ -217,7 +217,7 @@ window.onload = function() {
             var userPosition = "#lat=" + pos.lat + "&lng=" + pos.lng;
 
             $("#share").html('<p>Ссылка для друзей: </p><input id="url" type="text" class = "form-control" value="http://zonzujiro.github.io/yidlo' + userPosition + '" readonly="readonly" type="text" id="show" onclick="this.select()">');
-            window.location = window.location.pathname + userPosition;
+            // window.location = window.location.pathname + userPosition;
         }
 
         window.onhashchange = function() {
