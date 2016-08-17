@@ -1,13 +1,14 @@
 var pos = {};
 var map, url = parseUrl();
-
-searchUser();
+var venue = {};
 
 if (url.lat && url.lng) {
     pos = url;
+    getNearestYandexVenues().then(chooseAndDrawVenue);
     window.addEventListener('load', drawMap);
 
 } else {
+    searchUser().then(getNearestYandexVenues).then(chooseAndDrawVenue);
     window.addEventListener('hashchange', drawMap);
 }
 
@@ -15,10 +16,48 @@ function drawMap() {
     DG.then(function() {
         map = DG.map('map', {
             center: [pos.lat, pos.lng],
-            zoom: 15
+            zoom: 14
         });
 
-        DG.marker([pos.lat, pos.lng]).addTo(map);               
+        DG.marker([pos.lat, pos.lng]).addTo(map).bindPopup('Вы тут. Не узнаете себя?');
+        DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]]).addTo(map).bindPopup(venue.properties.name);
+    });
+}
+
+function chooseAndDrawVenue(venues) {
+    Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
+    venue = venues[Math.floor(Math.random() * venues.length)];
+    console.log(venue);
+
+    // var popup = DG.popup().setCont
+}
+
+function getNearestYandexVenues() {
+    return new Promise(function(resolve, reject) {
+        console.log(pos);
+        var url = 'https://search-maps.yandex.ru/v1/?apikey=007d1580-2af8-4055-ac77-d4e07172b230&text=Где поесть&lang=ru-RU&ll=' + pos.lng + ',' + pos.lat + '&spn=0.032315,0.011276';
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+
+        xhr.onload = function() {
+            var result = JSON.parse(this.response);
+            
+            if (this.status == 200) {
+                resolve(result.features);
+
+            } else {
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error("Network Error"));
+        };
+
+        xhr.send();
     });
 }
 
@@ -40,7 +79,7 @@ function parseUrl() {
 }
 
 function searchUser() {
-    Promise.all([useNavigatorGeo(), useGoogleGeo()]).then(processGeoData).catch(function(error) {
+    return Promise.all([useNavigatorGeo(), useGoogleGeo()]).then(processGeoData).catch(function(error) {
         getPositionFromLocalStorage();
         throw new Error(error);
     });
