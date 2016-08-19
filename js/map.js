@@ -19,15 +19,35 @@ function drawMap() {
             zoom: 14
         });
 
+        var company = venue.properties.CompanyMetaData;
+
         DG.marker([pos.lat, pos.lng]).addTo(map).bindPopup('Вы тут. Не узнаете себя?');
-        DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]]).addTo(map).bindPopup(venue.properties.name);
+        console.log(company);
+        // DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]]).addTo(map).bindPopup(venue.properties.name);
+        var popUp = DG.popup()
+                .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
+                .setHeaderContent('<h4>' + company.name + '</h4>')
+                .setContent('<adress class="callout__address">' + venue.properties.description + '</adress>' + 
+                    '<div class="callout__phone">' + company.Phones[0].formatted + '</div>' + 
+                    '</br>' + 
+                    '<div class="callout__workhours">' + company.Hours.text + '</div>')
+                .openOn(map);
     });
 }
 
 function chooseAndDrawVenue(venues) {
+    function createPopup() {
+
+
+        var popUp = DG.popup()
+                .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
+                .setHeaderContent('<h1>' + venue.CompanyMetaData.name + '</h1>')
+                .setContent('<adress>' + venue.CompanyMetaData.description + '</adress>');
+    }
+
+
     Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
     venue = venues[Math.floor(Math.random() * venues.length)];
-    console.log(venue);
 
     // var popup = DG.popup().setCont
 }
