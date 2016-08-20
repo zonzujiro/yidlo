@@ -1,6 +1,7 @@
 var pos = {};
 var map, url = parseUrl();
 var venue = {};
+var popup = {};
 
 if (url.lat && url.lng) {
     pos = url;
@@ -16,40 +17,64 @@ function drawMap() {
     DG.then(function() {
         map = DG.map('map', {
             center: [pos.lat, pos.lng],
-            zoom: 14
+            zoom: 15
         });
-
-        var company = venue.properties.CompanyMetaData;
-
         DG.marker([pos.lat, pos.lng]).addTo(map).bindPopup('Вы тут. Не узнаете себя?');
-        console.log(company);
-        // DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]]).addTo(map).bindPopup(venue.properties.name);
-        var popUp = DG.popup()
-                .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
-                .setHeaderContent('<h4>' + company.name + '</h4>')
-                .setContent('<adress class="callout__address">' + venue.properties.description + '</adress>' + 
-                    '<div class="callout__phone">' + company.Phones[0].formatted + '</div>' + 
-                    '</br>' + 
-                    '<div class="callout__workhours">' + company.Hours.text + '</div>')
-                .openOn(map);
+        DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]]).addTo(map).bindPopup(popUp);
     });
 }
 
 function chooseAndDrawVenue(venues) {
-    function createPopup() {
+    var company = {},
+        popupContent = '<div class="popup-content">';
 
-
-        var popUp = DG.popup()
-                .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
-                .setHeaderContent('<h1>' + venue.CompanyMetaData.name + '</h1>')
-                .setContent('<adress>' + venue.CompanyMetaData.description + '</adress>');
-    }
-
+    var additionalInfo = '';
 
     Math.seedrandom(Math.floor(new Date().getTime() / 86400000));
     venue = venues[Math.floor(Math.random() * venues.length)];
+    companyMeta = venue.properties.CompanyMetaData;
+    console.log(venue);
 
-    // var popup = DG.popup().setCont
+    if (venue.properties.description) {
+        popupContent += '<adress class="callout__address">' + venue.properties.description + '</adress>';        
+    }
+
+    if (companyMeta.Phones.length && companyMeta.Phones[0].formatted) {
+        popupContent += '<div class="callout__phone">' + companyMeta.Phones[0].formatted + '</div>';
+    }
+
+    if (companyMeta.Links.length) {
+        popupContent += '<a href=' + companyMeta.Links[0].href + '>Сайт заведения</a>';
+    }
+
+    if (companyMeta.Hours && companyMeta.Hours.text) {
+        popupContent += '<div class="callout__workhours">Работает: ' + companyMeta.Hours.text + '</div>'
+    }
+
+    addFeatures();
+
+    popupContent += '</div>';
+
+    popUp = DG.popup()
+                .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
+                .setHeaderContent('<h3>' + companyMeta.name + '</h3>')
+                .setContent(popupContent);
+
+    function addFeatures() {
+        var features = companyMeta.Features;
+
+        for (var i = 0; i < features.length; i++) {
+            if (features[i].id == 'average_bill2') {
+                popupContent += '<div>Средний счет: ' + features[i].value + '</div>';
+
+            } else if (features[i].id == 'payment_by_credit_card') {
+                popupContent += '<div>' + (features[i].value ? 'Расчет картой' : 'Нет расчета картой') + '</div>';
+            
+            } else if (features[i].id == 'wi_fi' && features[i].value) {
+                popupContent += '<div>Wi-Fi</div>';
+            }
+        }
+    }
 }
 
 function getNearestYandexVenues() {
@@ -199,4 +224,3 @@ function getPositionFromLocalStorage() {
         };
     }
 }
->>>>>>> fca403e4990fa555696df41d2c739b9adecf02e5

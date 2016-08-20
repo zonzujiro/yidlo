@@ -94,3 +94,7 @@ h1 {
     width: 100%;
     height: inherit;
 }
+
+.popup-content {
+    width: 250px;
+}
