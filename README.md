@@ -1,5 +1,9 @@
 # yidlo
-Choose restoran nearby
+Can't choose place where take business-lunch? Yidlo can randomly pick nearby cafe for you. 
+Also, it allows you to share location of cafe with your friends.
 
-Веб-сторінка знайде випадковий заклад где можна поїсти на відстані не більше ніж 1 км.
-Зручно, якщо хочеться кудись піти але не має можливості визначитися з місцем.
+# todo
+- add filtration by price
+- add filtration by distance
+- rewrite place sharing
+- rewrite design
