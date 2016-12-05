@@ -7,3 +7,5 @@ Also, it allows you to share location of cafe with your friends.
 - add filtration by distance
 - rewrite place sharing
 - rewrite design
+
+Link to gitpages http://zonzujiro.github.io/yidlo/
