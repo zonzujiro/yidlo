@@ -1,0 +1,22 @@
+#map {
+  width: 100vw;
+  height: 100vh;
+  background: grey;
+}
+
+.infobox {
+    height: auto;
+    width: 250px;
+    position: absolute;
+    padding: 1em;
+    top: 15vh;
+    left: 15vw;
+    background: white;
+    transition: 350ms;
+    opacity: 0.95;
+}
+
+.logo {
+  color:#e81123;
+  cursor: default;
+}
