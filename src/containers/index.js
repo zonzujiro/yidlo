@@ -103,7 +103,10 @@ class App extends Component {
             return Promise.resolve(position)
         
         } else {
-            return this.useGoogleGeo()
+            return this.useNavigatorGeo().then(
+                data => data,
+                err => this.useGoogleGeo()
+            )
         }
     }
 
