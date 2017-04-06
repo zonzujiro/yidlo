@@ -33,7 +33,8 @@ const App = props => {
             <div className='infobox'>
                 <h1 className='logo ms-font-su'>Yidlo</h1>
                 <TextField 
-                    description='Copy link to share with your friends'
+                    value={`${window.location}`}
+                    description='Отправьте ссылку, чтобы поделиться с друзьями'
                 />
             </div>
         </div>

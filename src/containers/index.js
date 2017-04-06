@@ -81,17 +81,42 @@ class App extends Component {
         }
     }
 
+    getHash(hash) {
+        let urlParam = {},
+            match,
+            pl = /\+/g,
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = s => decodeURIComponent(s.replace(pl, ' ')),
+            query = hash.substring(1);
+
+        while (match = search.exec(query)) {
+            urlParam[decode(match[1])] = decode(match[2]);
+        }
+
+        return urlParam;
+    }
+
     findUserPosition() {
-        this.useNavigatorGeo().then(position => 
-            this.setState({ position }))
+        const position = this.getHash(window.location.hash)
+
+        if (position.hasOwnProperty('lat') && position.hasOwnProperty('lng')) {
+            return Promise.resolve(position)
+        
+        } else {
+            return this.useGoogleGeo()
+        }
     }
 
     componentDidMount() {
-        // this.findUserPosition()
-        this.useGoogleGeo()
+        this.findUserPosition()
             .then(this.getNearestYandexVenues)
             .then(this.selectVenue)
-            .then(newState => this.setState(newState))
+            .then(newState => {
+                const { position } = newState;
+
+                window.history.pushState({}, '', `#lat=${position.lat}&lng=${position.lng}`)
+                this.setState(newState)
+            })
     }
     
     render() {

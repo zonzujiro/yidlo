@@ -6,11 +6,11 @@
 
 .infobox {
     height: auto;
-    width: 250px;
+    width: 350px;
     position: absolute;
     padding: 1em;
-    top: 15vh;
-    left: 15vw;
+    top: 8vh;
+    left: 8vw;
     background: white;
     transition: 350ms;
     opacity: 0.95;
@@ -34,14 +34,14 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    font-family: 'Segoe UI Regular Cyrillic', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
 }
 
 .mediaAttributes__groupTitle {
     overflow: hidden;
     margin: 0 0 3px;
     text-overflow: ellipsis;
-    /*white-space: nowrap;*/
-    font: 700 14px/20px Helvetica,Arial,sans-serif;
+    font: 600 14px/20px 'Segoe UI Regular Cyrillic', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif
 }
 
 .mediaAttributes__group {
@@ -58,6 +58,8 @@
     display: inline-block;
     box-sizing: border-box;
     font: 14px/20px Helvetica,Arial,sans-serif;
+    width: 268px;
+    overflow-x: overlay;
 }
 
 .mediaCard__block {

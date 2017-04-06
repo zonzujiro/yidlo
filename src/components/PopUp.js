@@ -17,28 +17,26 @@ const getHours = ({ Hours }) => {
 const getLinks = ({ Links }) => {
     if (Array.isArray(Links)) {
         return Links.map(({ href }) => 
-            `<li class="mediaAttributes__groupListItem"><a href=${href}>${href}</a></li>`
+            `<li class="mediaAttributes__groupListItem"><a href=${href}>Сайт заведения</a></li>`
         ).join('')
     }
     return '';
 }
 
 const getAverageBill = ({ Features }) => {
-    const bill = Features.find(feature => feature.id == 'average_bill2')
+    const bill = Features.find(feature => feature.id === 'average_bill2')
 
     if (bill) {
-        return `<li class="mediaAttributes__groupListItem">
-                    <span class="mediaAttributes__groupListItemSum">
-                        Средний счет — <span class="mediaAttributes__groupListItemSumCurrency _uah">₴</span> ${bill.value}
-                    </span>
-                </li>`
+        return `<h3 class="mediaAttributes__groupTitle">
+                    Средний чек — ${bill.value}
+                </h3>`
     }
     return '';
 }
 
 const getBooleanFeature = ({ Features }, id) => {
     if (Array.isArray(Features)) {
-        const feauture = Features.find(feature => feature.id == id)
+        const feauture = Features.find(feature => feature.id === id)
 
         if (feauture && feauture.value) {
             return `<li class="mediaAttributes__groupListItem">${feauture.name}</li>`
@@ -50,7 +48,7 @@ const getBooleanFeature = ({ Features }, id) => {
 
 const getEnumFeature = ({ Features }, id) => {
     if (Array.isArray(Features)) {
-        const feauture = Features.find(feature => feature.id == id)
+        const feauture = Features.find(feature => feature.id === id)
 
         if (feauture) {
             return feauture.values.map(({ value }) => 
@@ -74,17 +72,15 @@ const getPopupContent = venueProperties => {
     const { CompanyMetaData: companyMeta } = venueProperties;
 
     return (
-        `<div class="mediaCard__block _animated" data-type="mediaAttributes">
-            <div id="module-1-13-2-2-6" data-module="mediaAttributes" class="mediaAttributes">
+        `<div class="mediaCard__block _animated">
+            <div class="mediaAttributes">
                 <h4 class="mediaAttributes__groupTitle">
                     <adress class='callout__address'>${venueProperties.description}</adress>
                 </h4>
                 <div class="mediaAttributes__block">
                     <div class="mediaAttributes__group">
                         <h3 class="mediaAttributes__groupTitle">${getCategories(companyMeta)}</h3>
-                        <span class="mediaAttributes__groupListItemSum">
-                            ${getAverageBill(companyMeta)}
-                        </span>
+                        ${getAverageBill(companyMeta)}
                     </div>
                     <div class="mediaAttributes__group">
                         <ul class="mediaAttributes__groupList">
