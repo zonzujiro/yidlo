@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { TextField  } from 'office-ui-fabric-react/lib/TextField';
-import PopUp from './PopUp'
+import getPopupContent from './PopUp'
 
 const App = props => {
     const { position, venue } = props
@@ -9,21 +9,22 @@ const App = props => {
 
     const companyMeta = venue.properties.CompanyMetaData;
 
-    const popUp = DG.popup()
-        .setHeaderContent('<h3>' + companyMeta.name + '</h3>')
-        .setContent(<PopUp venue={venue} />);
-
     DG.then(() => {
         const map = DG.map('map', {
             center: [position.lat, position.lng],
-            zoom: 15
+            zoom: 15,
+            closePopupOnClick: false
         });
 
-        DG.marker([position.lat, position.lng])
-            .addTo(map).bindPopup('Вы тут. Не узнаете себя?');
+        DG.marker([position.lat, position.lng], {
+            label: 'Вы тут. Не узнаете себя?'
+        }).addTo(map);
 
-        DG.marker([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
-            .addTo(map).bindPopup(popUp)
+        DG.popup([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
+            .setLatLng([venue.geometry.coordinates[1], venue.geometry.coordinates[0]])
+            .setHeaderContent(`<h3>${companyMeta.name}</h3>`)
+            .setContent(getPopupContent(venue.properties))
+            .openOn(map)
     })
 
      return (

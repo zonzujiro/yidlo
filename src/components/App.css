@@ -20,3 +20,59 @@
   color:#e81123;
   cursor: default;
 }
+
+.mediaAttributes__groupListItem {
+    display: inline-block;
+    cursor: default;
+}
+
+.mediaAttributes__groupListItem:first-letter {
+    text-transform: capitalize;
+}
+
+.mediaAttributes__groupList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mediaAttributes__groupTitle {
+    overflow: hidden;
+    margin: 0 0 3px;
+    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    font: 700 14px/20px Helvetica,Arial,sans-serif;
+}
+
+.mediaAttributes__group {
+    margin-bottom: 16px;
+}
+
+.mediaAttributes__block {
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    border-radius: 1px;
+}
+
+.mediaAttributes {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    font: 14px/20px Helvetica,Arial,sans-serif;
+}
+
+.mediaCard__block {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: top;
+    margin: 0 0 16px;
+    -webkit-transition: opacity ease-out .2s,-webkit-transform ease-out .2s;
+    transition: opacity ease-out .2s,transform ease-out .2s;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.mediaAttributes__groupListItem:not(:last-child)::after, .mediaAttributes__rubricsItem:not(:last-child)::after {
+    content: " • ";
+    color: rgb(170, 170, 170);
+}

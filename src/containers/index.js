@@ -59,7 +59,11 @@ class App extends Component {
     }
 
     useGoogleGeo() {
-        return fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyC43aIoS8meiBAY_ADc95dA6p4C1GkZ8WU')
+        const apiKey = 'AIzaSyAPQiX8tq16C2QoPRJqifTb-zQbQ8EhEzM';
+
+        return fetch(`https://www.googleapis.com/geolocation/v1/geolocate?key=${apiKey}`, {
+                method: 'POST'
+            })
             .then(res => {
                 if (!res.ok) {
                     return Promise.reject(res.statusText)
@@ -84,7 +88,7 @@ class App extends Component {
 
     componentDidMount() {
         // this.findUserPosition()
-        this.useNavigatorGeo()
+        this.useGoogleGeo()
             .then(this.getNearestYandexVenues)
             .then(this.selectVenue)
             .then(newState => this.setState(newState))
